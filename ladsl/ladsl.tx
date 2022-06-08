@@ -1,0 +1,55 @@
+/*
+    Land Administration DSL textX grammar
+*/
+
+File:
+    transactions*=Transaction
+;
+
+Transaction:
+    Transfer | Update // | Create
+;
+
+Transfer:
+    'transfer'
+    'from'
+        _from+=Party[',']
+        'parcel' (parcel_all?='all' | parcel=Parcel)
+        ('share' from_share+=Share[','])?
+    'to'
+        to+=Party[',']
+        ('share' to_share+=Share[','])?
+;
+
+Party: /[0-9a-zA-Z_-]+/;
+Parcel: ko=INT '/' parcel=INT;
+Share:
+    nom=INT '/' den=INT
+;
+
+Update:
+    UpdateParty | UpdateParcelPart
+;
+
+UpdateParty:
+    'update'
+    'party' party=Party
+    (('firstName' first_name=STRING)?
+     ('lastName' last_name=STRING)?
+     ('name' name=STRING)?
+     ('address' address=STRING)?
+    )#
+;
+
+UpdateParcelPart:
+    'update'
+    'parcelPart' parcel_part=ParcelPart
+    'landUse' land_use=ID
+;
+
+ParcelPart: ko=INT '/' parcel=INT '/' part=INT;
+
+// special rule for comments.
+Comment:
+    /\/\/.*$/
+;
