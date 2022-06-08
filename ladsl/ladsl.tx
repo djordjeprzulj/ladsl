@@ -7,7 +7,7 @@ File:
 ;
 
 Transaction:
-    Transfer | Update // | Create
+    Transfer | Update | Create
 ;
 
 Transfer:
@@ -22,13 +22,14 @@ Transfer:
 ;
 
 Party: /[0-9a-zA-Z_-]+/;
-Parcel: ko=INT '/' parcel=INT;
+Parcel: ko=INT '/' parcel=INT ('/' part=INT)?;
+Building: ko=INT '/' parcel=INT '/' building=INT ('/' unit=INT)?;
 Share:
     nom=INT '/' den=INT
 ;
 
 Update:
-    UpdateParty | UpdateParcelPart
+    UpdateParty | UpdateUnit
 ;
 
 UpdateParty:
@@ -41,13 +42,26 @@ UpdateParty:
     )#
 ;
 
-UpdateParcelPart:
+UpdateUnit:
     'update'
-    'parcelPart' parcel_part=ParcelPart
-    'landUse' land_use=ID
+    ('parcel' parcel=Parcel
+     | 'building' building=Building)
+    ('landUse' land_use=ID
+     |'right' right=Right 'party' party=Party)
 ;
 
-ParcelPart: ko=INT '/' parcel=INT '/' part=INT;
+Right:
+    Mortgage;
+
+Mortgage: 'mortgage' ammount=FLOAT percent=FLOAT '%';
+
+
+Create:
+    'create'
+     'building' building=Building
+     'party' party+=Party[',']
+     'share' share+=Share[',']
+;
 
 // special rule for comments.
 Comment:
