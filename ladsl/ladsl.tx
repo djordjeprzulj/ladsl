@@ -7,7 +7,15 @@ File:
 ;
 
 Transaction:
+    LegalTransaction | GeoTransaction
+;
+
+LegalTransaction:
     Transfer | Update | Create
+;
+
+GeoTransaction:
+    CreateDevSite | ApplyDevSite
 ;
 
 Transfer:
@@ -62,6 +70,21 @@ Create:
      'party' party+=Party[',']
      'share' share+=Share[',']
 ;
+
+CreateDevSite:
+    'create' 'development' 'site' site=DevSiteID
+    'geoaggregates' geoaggregates+=GeoAggregateID[',']
+;
+
+ApplyDevSite:
+    'apply' 'development' 'site' site=DevSiteID
+;
+
+DevSiteID:
+    ko=INT '/' id=INT;
+
+GeoAggregateID:
+    ko=INT '/' id=INT;
 
 // special rule for comments.
 Comment:
