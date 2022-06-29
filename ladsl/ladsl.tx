@@ -32,9 +32,7 @@ Transfer:
 Party: /[0-9a-zA-Z_-]+/;
 Parcel: ko=INT '/' parcel=INT ('/' part=INT)?;
 Building: ko=INT '/' parcel=INT '/' building=INT ('/' unit=INT)?;
-Share:
-    nom=INT '/' den=INT
-;
+Share: nom=INT '/' den=INT;
 
 Update:
     UpdateParty | UpdateUnit
@@ -62,7 +60,6 @@ Right:
     Mortgage;
 
 Mortgage: 'mortgage' ammount=FLOAT percent=FLOAT '%';
-
 
 Create:
     'create'
